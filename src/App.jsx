@@ -7,6 +7,12 @@ import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   const [characters, setCharacters] = useState([]);
+  const [selectedId,setSelectedId]=useState(1)
+  const [favorites,setFavorites]=useState([])
+
+  const addToFavorite=(character)=>{
+    console.log(character)
+  }
   useEffect(() => {
     const getCharacters = async () => {
       try {
@@ -22,14 +28,14 @@ function App() {
     getCharacters();
   }, []);
   return (
-    <div>
+    <div style={{minHeight:'100vh'}} className="bg-slate-800  py-8">
       <Navbar characters={characters}/>
-      <section className="grid grid-cols-3">
-        <div>
-          <CharactersList />
+      <section className="grid grid-cols-2 mt-6">
+        <div >
+          <CharactersList characters={characters} onSetSelectedId={setSelectedId}/>
         </div>
-        <div className=" col-span-2 bg-slate-500">
-          <CharacterDetail />
+        <div >
+          <CharacterDetail selectedId={selectedId} favorites={favorites} onAddToFavorite={addToFavorite}/>
         </div>
       </section>
     </div>
