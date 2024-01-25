@@ -3,12 +3,19 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa6";
 import { FaCircle } from "react-icons/fa6";
 
-function CharactersList({ characters,onSetSelectedId }) {
+function CharactersList({ characters, onSetSelectedId, loading }) {
+  
   return (
     <div className="pl-16 pr-2">
-      {characters.map((item) => (
-        <CharacterItem item={item} key={item.id} />
-      ))}
+      {loading ? (
+        <p className="text-white">Loading ...</p>
+      ) : (
+        <div>
+          {characters.map((item) => (
+            <CharacterItem item={item} key={item.id} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -37,8 +44,8 @@ const CharacterItem = ({ item, children }) => {
           </p>
         </div>
       </div>
-      <button onClick={()=>onSetSelectedId(item.id)}>
-        <FaEye className="text-red-600"/>
+      <button onClick={() => onSetSelectedId(item.id)}>
+        <FaEye className="text-red-600" />
       </button>
     </div>
   );

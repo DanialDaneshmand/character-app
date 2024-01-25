@@ -7,6 +7,7 @@ import { FaCircleArrowDown } from "react-icons/fa6";
 function CharacterDetail({ selectedId, onAddToFavorite, favorites }) {
   const [character, setCharacter] = useState();
   const [loading, setLoading] = useState(false);
+  const [episodes, setEpisodes] = useState([]);
   useEffect(() => {
     const getCharacter = async () => {
       try {
@@ -24,6 +25,24 @@ function CharacterDetail({ selectedId, onAddToFavorite, favorites }) {
     if (selectedId) getCharacter();
   }, [selectedId]);
 
+  useEffect(() => {
+    const getEpisodes = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(
+          "https://rickandmortyapi.com/api/episode"
+        );
+        setEpisodes(data.results);
+        console.log(data.results);
+      } catch (error) {
+        toast.error(error.response.data.error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getEpisodes();
+  }, []);
+
   if (loading) {
     return <div>Loding ...</div>;
   }
@@ -38,7 +57,7 @@ function CharacterDetail({ selectedId, onAddToFavorite, favorites }) {
               favorites={favorites}
             />
           )}
-          {character && <ListOfEpisodes character={character} />}
+          {episodes && <ListOfEpisodes episodes={episodes} />}
         </div>
       ) : (
         <p>NO ITEM SELECTED</p>
@@ -85,7 +104,9 @@ function Detail({ character, onAddToFavorite, favorites }) {
         </div>
         <div>
           {isAddedToFavoraite ? (
-            <p className=" text-white font-bold text-lg">Already added to favorite !</p>
+            <p className=" text-white font-bold text-lg">
+              Already added to favorite !
+            </p>
           ) : (
             <button
               onClick={() => onAddToFavorite(character)}
@@ -100,25 +121,26 @@ function Detail({ character, onAddToFavorite, favorites }) {
   );
 }
 
-function ListOfEpisodes({ character }) {
+function ListOfEpisodes({ episodes }) {
   return (
     <div className=" p-4 my-8 bg-slate-600 rounded-lg">
       <div className="flex justify-between items-center">
         <p className="text-xl font-bold text-slate-800">List of Episodes :</p>
         <FaCircleArrowDown className="text-white" />
       </div>
-      <div className="flex justify-between">
-        <div>
-          {character.episode.map((item, index) => (
-            <p key={index}>{item}</p>
-          ))}
-        </div>
-        <div>
-        {character.episode.map((item, index) => (
-            <p key={index}>{item.air_data}</p>
-          ))}
-        </div>
-      </div>
+      <ul className="mt-4">
+        {episodes.map((item, index) => (
+          <li key={item.id} className="flex text-white justify-between my-2">
+            <div>
+              {String(index + 1).padStart(2, "0")}{'-'}
+              {item.episode} : <strong>{item.name}</strong>
+            </div>
+            <div className="bg-slate-700 py-1 w-4/12 flex justify-center items-center rounded-2xl">
+              {item.air_date}
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
