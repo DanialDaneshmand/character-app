@@ -15,6 +15,7 @@ function CharacterDetail({ selectedId, onAddToFavorite, favorites }) {
         const { data } = await axios.get(
           `https://rickandmortyapi.com/api/character/${selectedId}`
         );
+
         setCharacter(data);
       } catch (error) {
         toast.error(error.response.data.error);
@@ -30,21 +31,25 @@ function CharacterDetail({ selectedId, onAddToFavorite, favorites }) {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          "https://rickandmortyapi.com/api/episode"
+          `https://rickandmortyapi.com/api/episode`
         );
-        setEpisodes(data.results);
-        console.log(data.results);
+        
+        setEpisodes(data.results.slice(0,6));
       } catch (error) {
         toast.error(error.response.data.error);
       } finally {
         setLoading(false);
       }
     };
-    getEpisodes();
-  }, []);
+    selectedId && getEpisodes();
+  }, [selectedId]);
 
   if (loading) {
-    return <div>Loding ...</div>;
+    return (
+      <div className="text-white w-full flex justify-center pt-4">
+        Loding ...
+      </div>
+    );
   }
   return (
     <div className="px-16">
@@ -60,7 +65,7 @@ function CharacterDetail({ selectedId, onAddToFavorite, favorites }) {
           {episodes && <ListOfEpisodes episodes={episodes} />}
         </div>
       ) : (
-        <p>NO ITEM SELECTED</p>
+        <p className="text-white">NO ITEM SELECTED</p>
       )}
     </div>
   );
@@ -78,7 +83,7 @@ function Detail({ character, onAddToFavorite, favorites }) {
         <img
           src={character.image}
           alt={character.name}
-          className=" rounded-l-lg"
+          className=" rounded-l-lg w-64 h-64"
         />
       </div>
       <div className="flex flex-col justify-around pl-8 ">
@@ -132,7 +137,8 @@ function ListOfEpisodes({ episodes }) {
         {episodes.map((item, index) => (
           <li key={item.id} className="flex text-white justify-between my-2">
             <div>
-              {String(index + 1).padStart(2, "0")}{'-'}
+              {String(index + 1).padStart(2, "0")}
+              {"-"}
               {item.episode} : <strong>{item.name}</strong>
             </div>
             <div className="bg-slate-700 py-1 w-4/12 flex justify-center items-center rounded-2xl">

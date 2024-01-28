@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import Modal from "../Modal/Modal";
 
-function Navbar({ characters,setSearchItems }) {
+function Navbar({ characters,setSearchItems ,favorites,onDelete}) {
   const [value, setValue] = useState("");
   const [modalShow, setModalShow] = useState(false);
 
@@ -14,16 +15,16 @@ function Navbar({ characters,setSearchItems }) {
     };
   return (
     <div className=" grid grid-cols-1 md:grid-cols-2 bg-slate-600 rounded-xl mx-8 md:mx-16  justify-between px-8 py-6 items-center ">
-      {/* {modalShow && (
+      {modalShow && (
         <Modal
           onDelete={onDelete}
           favorites={favorites}
           modalShow={modalShow}
           setModalShow={setModalShow}
         />
-      )} */}
+      )}
       <LogoAndInputComp value={value} onSearch={handleSearch} />
-      <FavouriteComp characters={characters} />
+      <FavouriteComp modalShow={modalShow} setModalShow={setModalShow} characters={characters} favorites={favorites}/>
     </div>
   );
 }
@@ -45,14 +46,14 @@ const LogoAndInputComp = ({ value, onSearch }) => {
   );
 };
 
-const FavouriteComp = ({ characters }) => {
+const FavouriteComp = ({modalShow, setModalShow,characters,favorites }) => {
   return (
     <div className="flex items-center justify-between md:justify-around w-full">
       <p className="text-slate-400">found {characters.length} character</p>
-      <button className="flex">
+      <button className="flex" onClick={()=>setModalShow(!modalShow)}>
         <HeartIcon className="text-red-600 w-8 h-8" />
         <span className="badge font-bold inline-block text-sm bg-red-600 text-white px-1 rounded-full">
-          4
+          {favorites.length}
         </span>
       </button>
     </div>

@@ -9,13 +9,10 @@ import toast, { Toaster } from "react-hot-toast";
 function App() {
   const [characters, setCharacters] = useState([]);
   const [searchItems, setSearchItems] = useState([]);
-  const [selectedId, setSelectedId] = useState(1);
+  const [selectedId, setSelectedId] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const addToFavorite = (character) => {
-    console.log(character);
-  };
   useEffect(() => {
     const getCharacters = async () => {
       try {
@@ -24,8 +21,8 @@ function App() {
           "https://rickandmortyapi.com/api/character"
         );
         setLoading(false);
-        setCharacters(data.results.slice(0, 4));
-        setSearchItems(data.results.slice(0, 4));
+        setCharacters(data.results.slice(0, 7));
+        setSearchItems(data.results.slice(0, 7));
       } catch (error) {
         toast.error(error.message);
         setLoading(false);
@@ -34,23 +31,37 @@ function App() {
     getCharacters();
   }, []);
 
+  const handlAddToFavorite = (character) => {
+    setFavorites([...favorites, character]);
+  };
+
+  const handleDelete = (id) => {
+    setFavorites(favorites.filter((item) => item.id !== id));
+  };
+
   return (
     <div style={{ minHeight: "100vh" }} className="bg-slate-800  py-8">
       <Toaster />
-      <Navbar characters={characters} setSearchItems={setSearchItems} />
+      <Navbar
+        onDelete={handleDelete}
+        characters={characters}
+        setSearchItems={setSearchItems}
+        favorites={favorites}
+      />
       <section className="grid grid-cols-2 mt-6">
         <div>
           <CharactersList
             characters={searchItems}
             onSetSelectedId={setSelectedId}
             loading={loading}
+            selectedId={selectedId}
           />
         </div>
         <div>
           <CharacterDetail
             selectedId={selectedId}
             favorites={favorites}
-            onAddToFavorite={addToFavorite}
+            onAddToFavorite={handlAddToFavorite}
           />
         </div>
       </section>

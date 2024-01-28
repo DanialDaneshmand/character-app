@@ -3,8 +3,7 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa6";
 import { FaCircle } from "react-icons/fa6";
 
-function CharactersList({ characters, onSetSelectedId, loading }) {
-  
+function CharactersList({ characters, onSetSelectedId, loading, selectedId }) {
   return (
     <div className="pl-16 pr-2">
       {loading ? (
@@ -12,7 +11,22 @@ function CharactersList({ characters, onSetSelectedId, loading }) {
       ) : (
         <div>
           {characters.map((item) => (
-            <CharacterItem item={item} key={item.id} />
+            <CharacterItem
+              item={item}
+              key={item.id}
+            >
+              <button
+                onClick={() =>
+                  onSetSelectedId(selectedId === item.id ? null : item.id)
+                }
+              >
+                {selectedId === item.id ? (
+                  <FaEyeSlash className="text-red-600" />
+                ) : (
+                  <FaEye className="text-red-600" />
+                )}
+              </button>
+            </CharacterItem>
           ))}
         </div>
       )}
@@ -22,7 +36,12 @@ function CharactersList({ characters, onSetSelectedId, loading }) {
 
 export default CharactersList;
 
-const CharacterItem = ({ item, children }) => {
+export const CharacterItem = ({
+  item,
+  children,
+  onSetSelectedId,
+  selectedId,
+}) => {
   return (
     <div className=" bg-slate-600 my-4 p-2 rounded-lg w-[420px] flex justify-between items-center">
       <div className="flex">
@@ -44,9 +63,7 @@ const CharacterItem = ({ item, children }) => {
           </p>
         </div>
       </div>
-      <button onClick={() => onSetSelectedId(item.id)}>
-        <FaEye className="text-red-600" />
-      </button>
+      {children}
     </div>
   );
 };
