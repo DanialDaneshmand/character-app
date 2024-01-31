@@ -10,7 +10,9 @@ function App() {
   const [characters, setCharacters] = useState([]);
   const [searchItems, setSearchItems] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(
+    () => JSON.parse(localStorage.getItem("FAVORITES")) || []
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -21,8 +23,8 @@ function App() {
           "https://rickandmortyapi.com/api/character"
         );
         setLoading(false);
-        setCharacters(data.results.slice(0, 7));
-        setSearchItems(data.results.slice(0, 7));
+        setCharacters(data.results.slice(0, 4));
+        setSearchItems(data.results.slice(0, 4));
       } catch (error) {
         toast.error(error.message);
         setLoading(false);
@@ -30,6 +32,9 @@ function App() {
     };
     getCharacters();
   }, []);
+useEffect(()=>{
+  localStorage.setItem("FAVORITES",JSON.stringify(favorites))
+},[favorites])
 
   const handlAddToFavorite = (character) => {
     setFavorites([...favorites, character]);
@@ -48,7 +53,7 @@ function App() {
         setSearchItems={setSearchItems}
         favorites={favorites}
       />
-      <section className="grid grid-cols-2 mt-6">
+      <section className="grid sm:grid-cols-2 mt-6">
         <div>
           <CharactersList
             characters={searchItems}

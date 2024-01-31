@@ -8,7 +8,7 @@ function Modal({ setModalShow, favorites, onDelete }) {
   return (
     <div className="modalContainer">
       <div className="modal">
-        <div className="list bg-slate-800">
+        <div className="w-10/12 sm:w-8/12 md:w-5/12 rounded-2xl bg-slate-800">
           <div className="w-full flex justify-end p-2 ">
             <button
               onClick={() => setModalShow(false)}
@@ -20,7 +20,7 @@ function Modal({ setModalShow, favorites, onDelete }) {
           <div className="w-full flex flex-col items-center mb-4">
             {
               favorites.length?favorites.map((item) => (
-                <CharacterItem item={item} key={item.id}>
+                <CharacterItem item={item} key={item.id} >
                   <div>
                     <button
                       className="mr-2 text-red-600 text-lg"
