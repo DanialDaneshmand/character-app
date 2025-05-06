@@ -33,8 +33,10 @@ export default Navbar;
 
 const LogoAndInputComp = ({ value, onSearch }) => {
   return (
-    <div className="flex mb-16 md:mb-0 items-center justify-between md:justify-around w-full ">
-      <div className="text-white font-bold">logo</div>
+    <div className="flex flex-col sm:flex-row mb-16 md:mb-0 items-center justify-between md:justify-around w-full ">
+      <div className="mb-8 sm:mb-0">
+        <img src="/images/1.jpg" alt="" className=" w-16 h-16 rounded-full"/>
+      </div>
       <input
         value={value}
         onChange={ onSearch}
@@ -52,7 +54,7 @@ const FavouriteComp = ({modalShow, setModalShow,characters,favorites }) => {
       <p className="text-slate-400">found {characters.length} character</p>
       <button className="flex" onClick={()=>setModalShow(!modalShow)}>
         <HeartIcon className="text-red-600 w-8 h-8" />
-        <span className="badge font-bold inline-block text-sm bg-red-600 text-white px-1 rounded-full">
+        <span className="badge font-bold h-6 w-6 inline-block text-sm bg-red-600 text-white px-1 rounded-full">
           {favorites.length}
         </span>
       </button>

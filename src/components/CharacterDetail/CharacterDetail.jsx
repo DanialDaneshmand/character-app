@@ -161,7 +161,7 @@ function ListOfEpisodes({ episodes }) {
               {"-"}
               {item.episode} : <strong>{item.name}</strong>
             </div>
-            <div className="bg-slate-700 py-1 w-6/12 sm:w-8/12 md:w-8/12 lg:w-4/12 flex justify-center items-center rounded-2xl">
+            <div className="bg-slate-700 py-1 w-8/12 sm:w-8/12 md:w-8/12 lg:w-4/12 flex justify-center items-center rounded-2xl">
               {item.air_date}
             </div>
           </li>
